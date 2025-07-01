@@ -1,4 +1,4 @@
-package lecture.one.types;
+package lecture.one.primitives;
 
 public class Main {
     public static void main(String[] args) {
