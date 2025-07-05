@@ -70,13 +70,13 @@ public class Main {
         System.out.println("repeat(2): " + "Hi ".repeat(2)); // Java 11+
         System.out.println("join(): " + String.join(" - ", "Java", "Python", "C++"));
 
-        // === 🔁 Преобразование строки в массивы ===
+        // === Преобразование строки в массивы ===
         char[] chars = base.toCharArray();
         byte[] bytes = base.getBytes();
         System.out.println("toCharArray(): " + java.util.Arrays.toString(chars));
         System.out.println("getBytes(): " + java.util.Arrays.toString(bytes));
 
-        // === 🧪 Сравнение ссылок и содержимого ===
+        // === Сравнение ссылок и содержимого ===
         String s1 = "Test";
         String s2 = "Test";
         String s3 = new String("Test");
@@ -86,7 +86,7 @@ public class Main {
         System.out.println("s1 == s3: " + (s1 == s3));               // false
         System.out.println("s1.equals(s3): " + s1.equals(s3));       // true
 
-        // === 🧵 Шаблоны строк STR (Java 21+) ===
+        // === Шаблоны строк STR (Java 21+) ===
         /*
         String name = "Alice";
         int age = 30;
