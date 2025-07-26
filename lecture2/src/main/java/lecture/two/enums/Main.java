@@ -1,4 +1,4 @@
-package lecture.one.enums;
+package lecture.two.enums;
 
 // Простой enum без логики — только фиксированный набор направлений
 enum Direction {

@@ -1,4 +1,4 @@
-package lecture.one.anonymous;
+package lecture.two.anonymous;
 
 import javax.swing.*;
 import java.awt.event.*;

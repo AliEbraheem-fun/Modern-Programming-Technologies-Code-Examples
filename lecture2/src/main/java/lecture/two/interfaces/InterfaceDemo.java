@@ -1,3 +1,5 @@
+package lecture.two.interfaces;
+
 // Основной интерфейс, задающий поведение движущегося объекта
 interface Movable {
     // Константа — максимальная скорость (public static final по умолчанию)

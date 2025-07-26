@@ -1,4 +1,4 @@
-package lecture.one.classes;
+package lecture.two.classes;
 // Абстрактный базовый класс (можно наследовать только один)
 abstract class Device {
     public abstract void turnOn();

@@ -1,4 +1,4 @@
-package lecture.one.records;
+package lecture.two.records;
 
 // Объявление записи с двумя полями: тип и имя достаточно
 public record Person(String name, int age) implements Comparable<Person> {

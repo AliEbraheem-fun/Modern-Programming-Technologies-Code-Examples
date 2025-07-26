@@ -1,4 +1,4 @@
-package lecture.one.strings;
+package lecture.two.strings;
 
 // Для использования STR нужно компилировать с --enable-preview и использовать JDK 21+
 // import java.util.StringTemplate;

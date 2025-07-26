@@ -1,4 +1,4 @@
-package lecture.one.arrays;
+package lecture.two.arrays;
 public class Main {
     public static void main(String[] args) {
 

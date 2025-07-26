@@ -1,4 +1,4 @@
-package lecture.one.annotations;
+package lecture.two.annotations;
 
 // === Пример 1: Аннотация с RetentionPolicy.SOURCE ===
 // Используется только во время компиляции (например, ErrorProne, Checkstyle, Lombok)
