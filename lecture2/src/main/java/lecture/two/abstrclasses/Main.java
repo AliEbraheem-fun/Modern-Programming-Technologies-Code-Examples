@@ -1,3 +1,5 @@
+package lecture.two.abstrclasses;
+
 // Интерфейс с одним абстрактным методом
 interface Trainable {
     void train(); // абстрактный метод
