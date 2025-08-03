@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="container mt-5">
+
+<!-- Page Heading -->
+<h1 class="text-danger mb-4">Something went wrong...</h1>
+
+<!-- General Error Message -->
+<!-- This is the default fallback error message -->
+<p class="lead">
+    An unexpected error occurred. Please try again later or contact support.
+</p>
+
+<!-- Conditional Detailed Error Message -->
+<!-- If a custom error message is available in the model, it will be displayed -->
+<div th:if="${message}" class="alert alert-warning mt-3" th:text="${message}"></div>
+
+<!-- Optional HTTP Status Display -->
+<!-- If status code is passed, show it -->
+<div th:if="${status}" class="mt-2">
+    <strong>Status:</strong> <span th:text="${status}"></span>
+</div>
+
+<!-- Optional Timestamp -->
+<!-- Helpful in debugging or for user support -->
+<div th:if="${timestamp}" class="mt-1">
+    <strong>Timestamp:</strong> <span th:text="${timestamp}"></span>
+</div>
+
+<!-- Optional Path -->
+<!-- Indicates which URL caused the error -->
+<div th:if="${path}" class="mt-1">
+    <strong>Path:</strong> <span th:text="${path}"></span>
+</div>
+
+<!-- Back Button -->
+<!-- Takes the user to home or fallback page -->
+<div class="mt-4">
+    <a href="/" class="btn btn-outline-primary">Return to Home</a>
+</div>
+
+</body>
+</html>

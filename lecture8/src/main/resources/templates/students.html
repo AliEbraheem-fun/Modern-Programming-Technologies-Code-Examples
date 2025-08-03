@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Students</title>
+
+    <!-- Bootstrap 5 for styling -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+
+<body class="container mt-4">
+
+<!-- Page title -->
+<h2 class="mb-4">Student List</h2>
+
+<!-- Flash message section (e.g. success or error message) -->
+<div th:if="${message}" class="alert alert-info text-center" th:text="${message}"></div>
+
+<!-- Main students table -->
+<table class="table table-bordered table-striped align-middle">
+    <thead class="table-dark">
+    <tr>
+        <th>Name</th>
+        <th>Surname</th>
+        <th style="width: 25%">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Loop through each student in the model -->
+    <tr th:each="student : ${students}">
+
+        <!-- Edit mode: if current student is being edited -->
+        <th:block th:if="${student.id == editingId}">
+            <td colspan="3">
+                <!-- Form for saving updates to the student -->
+                <form th:action="@{/students/save}" th:object="${student}" method="post" class="row g-2 align-items-center">
+                    <input type="hidden" th:field="*{id}"/>
+
+                    <!-- Input for name -->
+                    <div class="col-md-4">
+                        <input type="text" th:field="*{name}" class="form-control" placeholder="Name" required/>
+                    </div>
+
+                    <!-- Input for surname -->
+                    <div class="col-md-4">
+                        <input type="text" th:field="*{surname}" class="form-control" placeholder="Surname" required/>
+                    </div>
+
+                    <!-- Save and cancel buttons -->
+                    <div class="col-md-4 d-flex gap-2">
+                        <button type="submit" class="btn btn-success btn-sm">Save</button>
+                        <a th:href="@{/students}" class="btn btn-secondary btn-sm">Cancel</a>
+                    </div>
+                </form>
+            </td>
+        </th:block>
+
+        <!-- View mode: show student details -->
+        <th:block th:if="${student.id != editingId}">
+            <td th:text="${student.name}">Name</td>
+            <td th:text="${student.surname}">Surname</td>
+            <td>
+                <!-- Edit button: visible only to ADMIN and SUPER_ADMIN -->
+                <a class="btn btn-warning btn-sm"
+                   th:href="@{/students/edit/{id}(id=${student.id})}"
+                   sec:authorize="hasAnyRole('ADMIN', 'SUPER_ADMIN')">Edit</a>
+
+                <!-- Delete button: visible only to ADMIN and SUPER_ADMIN -->
+                <a class="btn btn-danger btn-sm"
+                   th:href="@{/students/delete/{id}(id=${student.id})}"
+                   sec:authorize="hasAnyRole('ADMIN', 'SUPER_ADMIN')"
+                   onclick="return confirm('Are you sure?')">Delete</a>
+            </td>
+        </th:block>
+    </tr>
+    </tbody>
+</table>
+
+<!-- Add new student form: visible only to ADMIN and SUPER_ADMIN -->
+<h4 sec:authorize="hasAnyRole('ADMIN', 'SUPER_ADMIN')">Add New Student</h4>
+<form th:action="@{/students/save}" th:object="${student}" method="post" class="row g-3 mt-3"
+      sec:authorize="hasAnyRole('ADMIN', 'SUPER_ADMIN')">
+
+    <input type="hidden" th:field="*{id}"/>
+
+    <!-- Name input field -->
+    <div class="col-md-5">
+        <input type="text" class="form-control" placeholder="Name" th:field="*{name}" required/>
+    </div>
+
+    <!-- Surname input field -->
+    <div class="col-md-5">
+        <input type="text" class="form-control" placeholder="Surname" th:field="*{surname}" required/>
+    </div>
+
+    <!-- Submit button labeled Add or Update -->
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100">
+            <span th:text="${student.id != 0} ? 'Update' : 'Add'">Add</span>
+        </button>
+    </div>
+</form>
+
+<!-- Navigation bar -->
+<div class="mt-4 d-flex justify-content-between">
+
+    <!-- User control link: only for SUPER_ADMIN -->
+    <a sec:authorize="hasRole('SUPER_ADMIN')"
+       class="btn btn-secondary" href="/users">User Control</a>
+
+    <!-- Logout button -->
+    <a href="/logout" class="btn btn-outline-secondary">Logout</a>
+</div>
+
+</body>
+</html>

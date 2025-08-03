@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Control</title>
+
+    <!-- Bootstrap CSS for consistent UI styling -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+
+<body class="container mt-4">
+
+<!-- Page title -->
+<h2 class="mb-4">User Control</h2>
+
+<!-- Flash message section for confirmation or status messages -->
+<div th:if="${message}" class="alert alert-info text-center" th:text="${message}"></div>
+
+<!-- Users table for displaying all registered users -->
+<table class="table table-bordered table-striped align-middle">
+    <thead class="table-dark">
+    <tr>
+        <th>Email</th>
+        <th>Role</th>
+        <th style="width: 25%">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <!-- Loop through all users in the model -->
+    <tr th:each="user : ${users}">
+        <!-- Email column -->
+        <td th:text="${user.email}">Email</td>
+
+        <!-- Role column with form to change role -->
+        <td>
+            <form th:action="@{/users/update}" method="post" class="d-flex align-items-center gap-2">
+
+                <!-- Hidden user ID -->
+                <input type="hidden" name="id" th:value="${user.id}" />
+
+                <!-- Role dropdown, disabled if user is SUPER_ADMIN -->
+                <select name="role" class="form-select form-select-sm"
+                        th:disabled="${user.role.name() == 'SUPER_ADMIN'}">
+
+                    <!-- USER role option -->
+                    <option value="USER" th:selected="${user.role.name() == 'USER'}">USER</option>
+
+                    <!-- ADMIN role option -->
+                    <option value="ADMIN"
+                            th:selected="${user.role.name() == 'ADMIN'}"
+                            th:if="${user.role.name() != 'SUPER_ADMIN'}">ADMIN</option>
+
+                    <!-- Static display of SUPER_ADMIN as a disabled option -->
+                    <option value="USER"
+                            th:selected="${user.role.name() == 'SUPER_ADMIN'}"
+                            th:if="${user.role.name() == 'SUPER_ADMIN'}" disabled>SUPER_ADMIN</option>
+                </select>
+            </form>
+        </td>
+
+        <!-- Actions column (Save + Delete buttons) -->
+        <td class="d-flex gap-2">
+
+            <!-- Save button (REST delete now moved separately) -->
+            <button class="btn btn-success btn-sm"
+                    th:onclick="'updateRole(' + ${user.id} + ', this.previousElementSibling.value)'"
+                    th:if="${user.role.name() != 'SUPER_ADMIN'}">Save</button>
+
+            <!-- Delete button - not available for SUPER_ADMIN -->
+            <button class="btn btn-danger btn-sm"
+                    th:attr="data-id=${user.id}"
+                    onclick="deleteUser(this.getAttribute('data-id'))"
+                    th:if="${user.role.name() != 'SUPER_ADMIN'}">Delete</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- Navigation buttons: Back and Logout -->
+<div class="mt-4 d-flex justify-content-between">
+    <!-- Back to students page -->
+    <a href="/students" class="btn btn-secondary">Back to Students</a>
+
+    <!-- Logout button -->
+    <a href="/logout" class="btn btn-outline-secondary">Logout</a>
+</div>
+
+<!-- JavaScript for sending REST requests -->
+<script>
+    // Sends DELETE request to remove user
+    function deleteUser(userId) {
+        if (confirm('Are you sure you want to delete this user?')) {
+            fetch('/api/users/' + userId, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + [[${jwt}]]
+                }
+            }).then(response => {
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    alert('Failed to delete user.');
+                }
+            });
+        }
+    }
+
+    // Sends PUT request to update user role
+    function updateRole(userId, role) {
+        fetch('/api/users/' + userId, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + [[${jwt}]]
+            },
+            body: JSON.stringify({ role: role })
+        }).then(response => {
+            if (response.ok) {
+                location.reload();
+            } else {
+                alert('Failed to update user role.');
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
